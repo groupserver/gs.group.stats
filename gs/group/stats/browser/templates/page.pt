@@ -1,0 +1,13 @@
+<html metal:use-macro="context/@@groupserver_site_home_layout/page">
+  <head>
+    <title metal:fill-slot="title">Group Stats:
+      <span tal:replace="view/siteInfo/name"/>
+    </title>
+  </head>
+  <body>
+    <tal:block metal:fill-slot="contextnavigation">&#160;</tal:block>
+    <div id="gs-stats-group" metal:fill-slot="body"
+ tal:define="munge_date python:modules['Products.XWFCore.XWFUtils'].munge_date">
+    </div><!--gs-stats-group->
+  </body>
+</html>
