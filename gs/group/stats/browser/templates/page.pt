@@ -8,6 +8,12 @@
     <tal:block metal:fill-slot="contextnavigation">&#160;</tal:block>
     <div id="gs-stats-group" metal:fill-slot="body"
  tal:define="munge_date python:modules['Products.XWFCore.XWFUtils'].munge_date">
+
+    <span tal:replace="python:view.posts()"/>
+    <span tal:replace="python:view.active_topics()"/>
+    <span tal:replace="python:view.authors()"/>
+    <span tal:replace="python:view.new_topics()"/>
+
     </div><!--gs-stats-group->
   </body>
 </html>
