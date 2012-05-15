@@ -9,6 +9,13 @@
     class=".page.GroupStats"
     template="browser/templates/page.pt"
     permission="zope2.View"/>
+
+  <browser:page 
+    for="Products.XWFChat.interfaces.IGSGroupFolder"
+    name="historicalstats.html"
+    class=".page.HistoricalGroupStats"
+    template="browser/templates/historical.pt"
+    permission="zope2.View"/>
  
 </configure>
 
