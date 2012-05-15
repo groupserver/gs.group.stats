@@ -4,14 +4,14 @@
   i18n_domain="groupserver">
  
   <browser:page 
-    for="Products.XWFChat.interfaces.IGSGroupFolder"
+    for="gs.group.base.interfaces.IGSGroupMarker"
     name="groupstats.html"
     class=".page.GroupStats"
     template="browser/templates/page.pt"
     permission="zope2.View"/>
 
   <browser:page 
-    for="Products.XWFChat.interfaces.IGSGroupFolder"
+    for="gs.group.base.interfaces.IGSGroupMarker"
     name="historicalstats.html"
     class=".page.HistoricalGroupStats"
     template="browser/templates/historical.pt"
