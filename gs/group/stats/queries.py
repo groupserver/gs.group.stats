@@ -55,7 +55,7 @@ class MembersAtDate(JoinLeaveQuery):
         s = sa.select([
           aet.c.subsystem,
           sa.func.count(aet.c.subsystem), 
-        ])
+        ], group_by=aet.c.subsystem)
         joinClauses = ((aet.c.subsystem == JOIN_SUBSYSTEM) & (aet.c.event_code == JOIN))
         leaveClauses = ((aet.c.subsystem == LEAVE_SUBSYSTEM) & (aet.c.event_code == LEAVE))
         s.append_whereclause(joinClauses | leaveClauses)
@@ -63,7 +63,6 @@ class MembersAtDate(JoinLeaveQuery):
         s.append_whereclause(aet.c.site_id == site_id)
         s.append_whereclause(aet.c.event_date>=start_period)
         s.append_whereclause(aet.c.event_date<=end_period)
-        s.group_by(aet.c.subsystem)
  
         r = s.execute()
         retval = {'gs.group.member.join': 0, 'gs.group.member.leave': 0}
@@ -160,6 +159,23 @@ class GroupStatsQuery(object):
         r = s.execute()
         retval = r.rowcount
 
+        return retval
+
+    @simplecache('gs.group.stats.GroupStatsQuery.single_post_topics', ck_sid_gid_sp_ep)
+    def single_post_topics(self, site_id, group_id, start_period, end_period):
+        p = self.postTable
+        t = self.topicTable
+        s = sa.select([p.c.topic_id], distinct=True, group_by=p.c.topic_id)
+        s.append_whereclause(p.c.topic_id==t.c.topic_id)
+        s.append_whereclause(t.c.num_posts==1)
+        s.append_whereclause(p.c.site_id==site_id)
+        s.append_whereclause(p.c.group_id==group_id)
+        s.append_whereclause(p.c.date>=start_period)
+        s.append_whereclause(p.c.date<=end_period)
+        
+        r = s.execute()
+        retval = r.rowcount
+        
         return retval
 
     @simplecache('gs.group.stats.GroupStatsQuery.dialogue_depths', ck_sid_gid_sp_ep)

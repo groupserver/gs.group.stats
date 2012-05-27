@@ -59,9 +59,12 @@ class HistoricalGroupStats(SitePage):
                ('authors', u'Authors'),
                ('join_delta', u'Join Delta'),
                ('member_average', u'Average Members'),
+               ('member_end_of_period', u'Members at end of Period'),
+               ('percentage_members_posting', u'Members posting (%)'),
                ('average_dialogue_depth', u'Average Dialogue Depth'),
                ('min_dialogue_depth', u'Min. Dialogue Depth'),
-               ('max_dialogue_depth', u'Max. Diaglogue Depth'))
+               ('max_dialogue_depth', u'Max. Diaglogue Depth'),
+               ('percentage_single_post_topics', u'Single Post Topics (%)'))
     
     def __init__(self, context, request):
         SitePage.__init__(self, context, request)
@@ -124,6 +127,39 @@ class HistoricalGroupStats(SitePage):
         
         return periods_as_dict(periods)
 
+    def member_end_of_period(self):
+        periods = []
+        for interval_start, interval_end in self.month_periods:
+            # we use the average member count for a single day
+            result = self.mad.average_member_count(self.siteInfo.id,
+                                    self.groupInfo.id,
+                                    interval_end, interval_end)
+
+            periods.append((interval_start.year, interval_start.month,
+                            round(result, 1)))
+
+        return periods_as_dict(periods)
+
+    def percentage_members_posting(self):
+        periods = []
+        for interval_start, interval_end in self.month_periods:
+            m_count = self.mad.average_member_count(self.siteInfo.id,
+                                    self.groupInfo.id,
+                                    interval_start, interval_end)
+
+            a_count = self.gs.authors(self.siteInfo.id, self.groupInfo.id,
+                                           interval_start,
+                                           interval_end)
+
+            percentage = 0.0
+            if a_count and m_count:
+                percentage = float(a_count)/float(m_count) * 100.0
+
+            periods.append((interval_start.year, interval_start.month,
+                            round(percentage, 1)))
+
+        return periods_as_dict(periods)
+
     def posts(self):
         periods = []
         for interval_start, interval_end in self.month_periods:
@@ -140,6 +176,24 @@ class HistoricalGroupStats(SitePage):
                                                interval_start,
                                                interval_end)
             periods.append((interval_start.year, interval_start.month, result))
+        return periods_as_dict(periods)
+
+    def percentage_single_post_topics(self):
+        periods = []
+        for interval_start, interval_end in self.month_periods:
+            spt_count = self.gs.single_post_topics(self.siteInfo.id,
+                                                   self.groupInfo.id,
+                                                   interval_start,
+                                                   interval_end)
+            at_count = self.gs.active_topics(self.siteInfo.id,
+                                               self.groupInfo.id,
+                                               interval_start,
+                                               interval_end)
+            percentage = 0.0
+            if at_count and spt_count:
+                percentage = float(spt_count)/float(at_count) * 100.0
+            periods.append((interval_start.year, interval_start.month,
+                            round(percentage,1)))
         return periods_as_dict(periods)
 
     def authors(self):
