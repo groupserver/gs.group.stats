@@ -130,7 +130,24 @@ class GroupStatsQuery(object):
         self.da = da
         self.topicTable = da.createTable('topic')
         self.postTable  = da.createTable('post')
- 
+        self.auditTable = da.createTable('audit_event')
+
+    @simplecache('gs.group.stats.GroupStatsQuery.posts_by_web', ck_sid_gid_sp_ep)
+    def posts_by_web(self, site_id, group_id, start_period, end_period):
+        t = self.auditTable
+        s = t.select()
+        
+        s.append_whereclause(t.c.site_id==site_id)
+        s.append_whereclause(t.c.group_id==group_id)
+        s.append_whereclause(t.c.event_date>=start_period)
+        s.append_whereclause(t.c.event_date<=end_period)
+        s.append_whereclause(t.c.subsystem=='groupserver.WebPost')
+        
+        r = s.execute()
+        retval = r.rowcount
+        
+        return retval
+
     @simplecache('gs.group.stats.GroupStatsQuery.posts', ck_sid_gid_sp_ep)
     def posts(self, site_id, group_id, start_period, end_period):
         t = self.postTable 
