@@ -58,16 +58,17 @@ class HistoricalGroupStats(SitePage):
                ('posts', u'Posts'),
                ('posts_per_day', u'Posts per Day'),
                ('percentage_posts_by_web', u'Posts by Web (%)'),
-               ('percentage_posts_by_email', u'Posts by Email (%s)'),
+               ('percentage_posts_by_email', u'Posts by Email (%)'),
                ('authors', u'Authors'),
                ('posts_per_author', u'Posts per Author'),
-               ('join_delta', u'Join Delta'),
+               ('join_delta', u'Members Joining/Leaving'),
+               ('join_delta_percentage', u'Members Joining/Leaving (%)'),
                ('member_average', u'Average Members'),
                ('member_end_of_period', u'Members at end of Period'),
                ('percentage_members_posting', u'Members posting (%)'),
                ('average_dialogue_depth', u'Average Dialogue Depth'),
                ('min_dialogue_depth', u'Min. Dialogue Depth'),
-               ('max_dialogue_depth', u'Max. Diaglogue Depth'),
+               ('max_dialogue_depth', u'Max. Dialogue Depth'),
                ('percentage_single_post_topics', u'Single Post Topics (%)'))
     
     def __init__(self, context, request):
@@ -118,6 +119,21 @@ class HistoricalGroupStats(SitePage):
             periods.append((interval_start.year, interval_start.month,
                             (join-leave)))
         return periods_as_dict(periods)
+
+    def join_delta_percentage(self):
+        jd_periods = self.join_delta()
+        ma_periods = self.member_average()
+        periods = jd_periods
+        for year in jd_periods:
+            for month in jd_periods[year]:
+                jd_value = jd_periods[year][month]
+                ma_value = ma_periods[year][month]
+                value = 0.0
+                if ma_value and jd_value:
+                    value = (jd_value/float(ma_value)) * 100.0
+                periods[year][month] = round(value,1)
+        
+        return periods 
 
     def member_average(self):
         periods = []
