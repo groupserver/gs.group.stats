@@ -56,31 +56,26 @@ class HistoricalGroupStats(SitePage):
                ('new_topics', u'New Topics'),
                ('active_topics', u'Active Topics'),
                ('posts', u'Posts'),
-               ('posts_per_day', u'Posts per Day'),
-               ('percentage_posts_by_web', u'Posts by Web (%)'),
-               ('percentage_posts_by_email', u'Posts by Email (%)'),
                ('authors', u'Authors'),
-               ('posts_per_author', u'Posts per Author'),
-               ('join_delta', u'Members Joining/Leaving'),
-               ('join_delta_percentage', u'Members Joining/Leaving (%)'),
+               ('join_delta', u'Join Delta'),
                ('member_average', u'Average Members'),
                ('member_end_of_period', u'Members at end of Period'),
                ('percentage_members_posting', u'Members posting (%)'),
                ('average_dialogue_depth', u'Average Dialogue Depth'),
                ('min_dialogue_depth', u'Min. Dialogue Depth'),
-               ('max_dialogue_depth', u'Max. Dialogue Depth'),
+               ('max_dialogue_depth', u'Max. Diaglogue Depth'),
                ('percentage_single_post_topics', u'Single Post Topics (%)'))
+
     
     def __init__(self, context, request):
         SitePage.__init__(self, context, request)
          
         self.groupInfo = createObject('groupserver.GroupInfo', self.context)
-        self.mad = MembersAtDate(self.context, self.context.zsqlalchemy)
-        self.gs = GroupStatsQuery(self.context.zsqlalchemy)
+        self.mad = MembersAtDate(self.context)
+        self.gs = GroupStatsQuery()
         self.now = datetime.datetime.now(pytz.utc)
         self.earliest_date = self.mad.earliest_member_record(self.siteInfo.id,
                                                         self.groupInfo.id)
-        
         self.month_periods = month_periods_as_datetime(month_periods(self.earliest_date, self.now))
 
     def display_stats(self):
@@ -120,21 +115,6 @@ class HistoricalGroupStats(SitePage):
                             (join-leave)))
         return periods_as_dict(periods)
 
-    def join_delta_percentage(self):
-        jd_periods = self.join_delta()
-        ma_periods = self.member_average()
-        periods = jd_periods
-        for year in jd_periods:
-            for month in jd_periods[year]:
-                jd_value = jd_periods[year][month]
-                ma_value = ma_periods[year][month]
-                value = 0.0
-                if ma_value and jd_value:
-                    value = (jd_value/float(ma_value)) * 100.0
-                periods[year][month] = round(value,1)
-        
-        return periods 
-
     def member_average(self):
         periods = []
         for interval_start, interval_end in self.month_periods:
@@ -143,7 +123,7 @@ class HistoricalGroupStats(SitePage):
                                     interval_start, interval_end)
             
             periods.append((interval_start.year, interval_start.month,
-                            int(result)))
+                            round(result, 1)))
         
         return periods_as_dict(periods)
 
@@ -156,7 +136,7 @@ class HistoricalGroupStats(SitePage):
                                     interval_end, interval_end)
 
             periods.append((interval_start.year, interval_start.month,
-                            int(result)))
+                            round(result, 1)))
 
         return periods_as_dict(periods)
 
@@ -166,6 +146,7 @@ class HistoricalGroupStats(SitePage):
             m_count = self.mad.average_member_count(self.siteInfo.id,
                                     self.groupInfo.id,
                                     interval_start, interval_end)
+
             a_count = self.gs.authors(self.siteInfo.id, self.groupInfo.id,
                                            interval_start,
                                            interval_end)
@@ -186,64 +167,6 @@ class HistoricalGroupStats(SitePage):
                                               interval_start,
                                               interval_end)
             periods.append((interval_start.year, interval_start.month, result))
-        return periods_as_dict(periods)
-
-    def percentage_posts_by_web(self):
-        periods = []
-        for interval_start, interval_end in self.month_periods:
-            byweb = self.gs.posts_by_web(self.siteInfo.id, self.groupInfo.id,
-                                              interval_start,
-                                              interval_end)
-            posts = self.gs.posts(self.siteInfo.id, self.groupInfo.id,
-                                  interval_start,
-                                  interval_end)
-            percent = 0
-            if posts:
-                percent = int((byweb/float(posts))*100.0)
-            periods.append((interval_start.year, interval_start.month, percent))
-        
-        return periods_as_dict(periods)
-
-    def percentage_posts_by_email(self):
-        periods = self.percentage_posts_by_web()
-        posts = self.posts()
-        for year in periods:
-            for month in periods[year]:
-                value = periods[year][month]
-                if posts[year][month] != 0:
-                    periods[year][month] = 100-value
-                else:
-                    periods[year][month] = 0
-        
-        return periods
-
-    def posts_per_day(self):
-        periods = []
-        for interval_start, interval_end in self.month_periods:
-            days = (interval_end-interval_start).days
-            result = self.gs.posts(self.siteInfo.id, self.groupInfo.id,
-                                              interval_start,
-                                              interval_end)
-            average = result/float(days)
-            periods.append((interval_start.year, interval_start.month,
-                            round(average,1)))
-        return periods_as_dict(periods)
-
-    def posts_per_author(self):
-        periods = []
-        for interval_start, interval_end in self.month_periods:
-            posts   = self.gs.posts(self.siteInfo.id, self.groupInfo.id,
-                                              interval_start,
-                                              interval_end)
-            authors = self.gs.authors(self.siteInfo.id, self.groupInfo.id,
-                                           interval_start,
-                                           interval_end)
-            average = 0
-            if authors != 0:
-                average = posts/float(authors)
-            periods.append((interval_start.year, interval_start.month,
-                            round(average,1)))
-        
         return periods_as_dict(periods)
 
     def active_topics(self):
@@ -336,12 +259,11 @@ class GroupStats(SitePage):
 
     @Lazy
     def groupStatsQuery(self):
-        da = self.context.zsqlalchemy
-        retval = GroupStatsQuery(da)
+        retval = GroupStatsQuery()
         return retval
 
     def join_delta(self):
-        mad = MembersAtDate(self.context, self.context.zsqlalchemy)
+        mad = MembersAtDate(self.context)
         jl_counts = mad.joinleave_counts(self.siteInfo.id, self.groupInfo.id,
                                     self.interval_start, self.interval_end)
         leave = jl_counts.get('gs.group.member.leave', 0)
@@ -350,7 +272,7 @@ class GroupStats(SitePage):
         return join-leave
 
     def member_average(self):
-        mad = MembersAtDate(self.context, self.context.zsqlalchemy)
+        mad = MembersAtDate(self.context)
         return mad.average_member_count(self.siteInfo.id, self.groupInfo.id,
                                     self.interval_start, self.interval_end)
 
