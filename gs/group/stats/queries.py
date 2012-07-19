@@ -2,7 +2,8 @@
 import sqlalchemy as sa
 import datetime
 
-from gs.database.core import getTable, getSession, getInstanceId 
+from gs.database.core import getTable, getSession
+from gs.config import getInstanceId 
 
 from gs.group.member.log.queries import JoinLeaveQuery
 
