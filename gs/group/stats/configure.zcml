@@ -5,17 +5,25 @@
  
   <browser:page 
     for="gs.group.base.interfaces.IGSGroupMarker"
-    name="groupstats.html"
-    class=".page.GroupStats"
-    template="browser/templates/page.pt"
-    permission="zope2.View"/>
-
-  <browser:page 
-    for="gs.group.base.interfaces.IGSGroupMarker"
     name="historicalstats.html"
-    class=".page.HistoricalGroupStats"
+    class=".page.GroupStatsView"
     template="browser/templates/historical.pt"
     permission="zope2.View"/>
+
+  <!--The Group Stats-->
+  <interface 
+    interface=".interfaces.IGSGroupStatsContentProvider"
+    type="zope.contentprovider.interfaces.ITALNamespaceData"/>
+  <class class=".groupstatscontentprovider.GroupStatsContentProvider">
+    <implements interface=".interfaces.IGSGroupStatsContentProvider"/>
+  </class>
+  <adapter
+    for="zope.interface.Interface
+      zope.publisher.interfaces.browser.IDefaultBrowserLayer
+      zope.interface.Interface"
+    factory=".groupstatscontentprovider.GroupStatsContentProvider"
+    provides="zope.contentprovider.interfaces.IContentProvider"
+    name="groupserver.HistoricalGroupStats"/>
  
 </configure>
 

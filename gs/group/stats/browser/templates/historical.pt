@@ -38,60 +38,9 @@
     <tal:block metal:fill-slot="contextnavigation">&#160;</tal:block>
     <div id="gs-stats-group-historical" metal:fill-slot="body">
 
-<table id="gs-group-stats-table" 
-  class="noFloat"
-  tal:define="months view/months;
-              sa view/display_stats">
-  <thead>
-    <tr class="year">
-      <th>&#160;</th>
-    </tr>
-    <tr class="month">
-      <th>&#160;</th>
-    </tr>
-    
-    <tr tal:repeat="stat sa"
-        tal:attributes="class python:stat[0].replace('_','-')">
-      <th><strong tal:content="python:stat[1]">Statistic Name</strong></th>
-    </tr>
-  </thead>
-  <tbody tal:define="sg python:lambda x,m: x[m[0].year].get(m[0].month, 0)">
-    <tr class="year">
-      <tal:block repeat="year view/years">
-        <th tal:define="y python:year[0];
-            nm python:year[1];
-            oe python:((y%2) and 'o') or 'e'"
-          tal:attributes="class oe; colspan python:nm*2"
-          tal:content="python:year[0]"
-          colspan="5">2012</th>
-      </tal:block>
-    </tr><!--year-->
-    <tr class="month">
-      <tal:block repeat="month view/months">
-        <th colspan="2"
-          tal:define="oe python:((month[0].year%2) and 'o') or 'e'"
-          tal:attributes="class oe; title python:month[0].strftime('%F')"
-          tal:content="python:month[0].strftime('%b')"></th>
-      </tal:block>
-    </tr><!--month-->
-    
-    <tal:block tal:repeat="stat python:sa">
-    <tr tal:attributes="class python:stat[0].replace('_','-')"
-        tal:define="result python:getattr(view, stat[0])()">
-      <tal:block repeat="month months">
-        <tal:block define="oe python:((month[0].year%2) and 'o') or 'e'">
-          <td tal:content="python:sg(result, month)"
-            tal:attributes="class oe;">?</td>
-          <td tal:attributes="class oe;">&#160;</td>
-        </tal:block>
-      </tal:block>
-    </tr>
-    </tal:block>
-
-
-  </tbody>
-</table>
-              
+  <p tal:define="groupId string:mpls; siteId string:main"
+    tal:content="structure provider:groupserver.HistoricalGroupStats">
+  </p>           
     </div>
   </body>
 </html>
