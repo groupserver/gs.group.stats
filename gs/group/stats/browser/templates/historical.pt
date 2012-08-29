@@ -38,7 +38,7 @@
     <tal:block metal:fill-slot="contextnavigation">&#160;</tal:block>
     <div id="gs-stats-group-historical" metal:fill-slot="body">
 
-  <p tal:define="groupId string:mpls; siteId string:main"
+  <p tal:define="groupId view/groupInfo/id; siteId view/siteInfo/id"
     tal:content="structure provider:groupserver.HistoricalGroupStats">
   </p>           
     </div>
