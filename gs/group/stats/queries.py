@@ -122,7 +122,22 @@ class MembersAtDate(JoinLeaveQuery):
 
         retval = (startperiod_member_count + endperiod_member_count) / 2.0
         return retval
+   
+    def members_on_webonly(self, site_id, group_id):
+        t = self.emailSettingTable
+        s = t.select()
 
+        #s.append_whereclause(t.c.site_id==site_id)
+        s.append_whereclause(t.c.group_id==group_id)
+        s.append_whereclause(t.c.setting=='webonly')
+
+        session = getSession()
+        r = session.execute(s)
+
+        retval = r.rowcount
+
+        return retval
+ 
     @cache('gs.group.stats.MembersAtDate.earliest_member_record', ck_sid_gid)
     def earliest_member_record(self, site_id, group_id):
         aet = self.auditEventTable
@@ -149,8 +164,9 @@ class MembersAtDate(JoinLeaveQuery):
 class GroupStatsQuery(object):
     def __init__(self):
         self.topicTable = getTable('topic')
-        self.postTable = getTable('post')
-    # TODO: Remove the cut 'n' paste software engineering
+        self.postTable  = getTable('post')
+        self.auditEventTable = getTable('audit_event')
+		TODO: Remove the cut 'n' paste software engineering
 
     @cache('gs.group.stats.GroupStatsQuery.posts', ck_sid_gid_sp_ep)
     def posts(self, site_id, group_id, start_period, end_period):
@@ -165,6 +181,23 @@ class GroupStatsQuery(object):
         session = getSession()
         r = session.execute(s)
         retval = r.rowcount
+        
+        return retval
+
+    @cache('gs.group.stats.GroupStatsQuery.posts_by_web', ck_sid_gid_sp_ep)
+    def posts_by_web(self, site_id, group_id, start_period, end_period):
+        t = self.auditEventTable
+        s = sa.select([t.c.user_id], distinct=True)
+        s.append_whereclause(t.c.site_id==site_id)
+        s.append_whereclause(t.c.group_id==group_id)
+        s.append_whereclause(t.c.event_date>=start_period)
+        s.append_whereclause(t.c.event_date<=end_period)
+        s.append_whereclause(t.c.subsystem==u'groupserver.WebPost')
+
+        session = getSession()
+        r = session.execute(s)
+        retval = r.rowcount
+
         return retval
 
     @cache('gs.group.stats.GroupStatsQuery.active_topics', ck_sid_gid_sp_ep)
