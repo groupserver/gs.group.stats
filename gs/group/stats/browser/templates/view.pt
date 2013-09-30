@@ -1,0 +1,109 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
+  metal:use-macro="context/@@groupserver_layout/page">
+  <head>
+    <title metal:fill-slot="title">Posting statistics:
+    <span tal:replace="view/groupInfo/name">this group</span>:
+    <span tal:replace="view/siteInfo/name">this site</span>
+    </title>
+    <link rel="up" title="This group" metal:fill-slot="metadata"
+          href="#" tal:attributes="href view/groupInfo/relativeURL" />
+  </head>
+  <body>
+    <ul metal:fill-slot="breadcrumb">
+      <li>
+        <a class="icon-alone" title="Site Homepage" href="/"
+           tal:attributes="title string:${view/siteInfo/name} homepage">
+          <span data-icon="⌂" aria-hidden="true"/>
+          <span class="screen-reader-text">Site home page</span>
+        </a>
+      </li>
+      <li>
+        <a href="/" title="Group"
+           tal:attributes="href view/groupInfo/relativeURL">
+          <strong tal:content="view/groupInfo/name">This group</strong>
+        </a>
+      </li>
+      <li>
+        Posting statistics
+      </li>
+    </ul>
+    <tal:block metal:fill-slot="body">
+      <h1>Posting statistics</h1>
+      <p define="groupId view/groupInfo/id"
+         tal:content="structure provider:groupserver.GroupStats">
+        Summary of the stats
+      </p>
+      <p class="intro">
+        The table below shows the number of posts made every month to
+        <a tal:attributes="href view/groupInfo/relativeURL;"
+           tal:content="view/groupInfo/name"
+           class="group" href="#">this group</a>,
+        and the number of distinct authors who posted.
+      </p>
+      <table class="table">
+        <thead>
+          <tr>
+            <th></th>
+            <th></th>
+            <th colspan="12">Month</th>
+          </tr>
+          <tr style="border-bottom: thin solid black;">
+            <th>Year</th>
+            <th></th>
+            <tal:block tal:repeat="m python:range(1, 13)">
+              <th tal:content="m"/>
+            </tal:block>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr style="border-top: thin solid black;">
+            <th>Year</th>
+            <th></th>
+            <tal:block tal:repeat="m python:range(1, 13)">
+              <th tal:content="m"/>
+            </tal:block>
+          </tr>
+          <tr>
+            <th></th>
+            <th></th>
+            <th colspan="12">Month</th>
+          </tr>
+        </tfoot>
+        <tbody>
+          <tal:block tal:repeat="year view/get_years">
+            <tal:block tal:define="n repeat/year/number;
+              odd python:n%2;
+              months python:view.get_months(year)">
+              <tr tal:attributes="id string:posts-year-${year};
+                class python:odd and 'posts odd' or 'posts even'">
+                <th class="year" rowspan="2" tal:content="year">year</th>
+                <th>Posts</th>
+                <tal:block tal:repeat="m python:range(1, 13)">
+                  <td tal:define="mVal python:months.get(m, {})"
+                    tal:content="mVal/post_count | nothing"
+                    class="val cardinal"/>
+                </tal:block>
+              </tr>
+              <tr class="users"
+                tal:attributes="id string:users-year-${year};
+                class python:odd and 'users odd' or 'users even'">
+                <th>
+                  <acronym 
+                    title="Users who posted each month">Authors</acronym>
+                </th>
+                <tal:block tal:repeat="m python:range(1, 13)">
+                  <td tal:define="mVal python:months.get(m, {})"
+                    tal:content="mVal/user_count | nothing"
+                    class="val cardinal"/>
+                </tal:block>
+              </tr>
+            </tal:block>
+          </tal:block>
+        </tbody>
+      </table>
+    </tal:block>
+  </body>
+</html>
+

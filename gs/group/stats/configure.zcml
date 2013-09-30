@@ -3,7 +3,12 @@
            xmlns:browser="http://namespaces.zope.org/browser"
            i18n_domain="groupserver">
   
+  <browser:page
+    for="gs.group.base.interfaces.IGSGroupMarker"
+    name="stats.html"
+    class=".view.GSGroupStatsView"
+    template="browser/templates/view.pt"
+    permission="zope2.View" />    
   
-
 </configure>
 
