@@ -16,6 +16,7 @@ import datetime
 import pytz
 import sqlalchemy as sa
 from zope.component import createObject
+from gs.cache import cache
 from gs.config import getInstanceId
 from gs.database.core import getTable, getSession
 from gs.group.member.join.audit import JOIN_GROUP as JOIN
@@ -25,7 +26,6 @@ from gs.group.member.leave.audit import SUBSYSTEM as LEAVE_SUBSYSTEM
 from gs.group.member.log.queries import JoinLeaveQuery
 from Products.GSGroupMember.groupMembersInfo import GSGroupMembersInfo
 from Products.XWFCore.XWFUtils import dt_to_user_timezone
-from gs.cache import cache
 
 
 def ck_sid_gid_sp_ep(*args):
