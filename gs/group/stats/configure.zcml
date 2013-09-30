@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <configure xmlns="http://namespaces.zope.org/zope"
-  xmlns:browser="http://namespaces.zope.org/browser"
-  i18n_domain="groupserver">
- 
-  <browser:page 
-    for="gs.group.base.interfaces.IGSGroupMarker"
-    name="groupstats.html"
-    class=".page.GroupStats"
-    template="browser/templates/page.pt"
-    permission="zope2.View"/>
+           xmlns:browser="http://namespaces.zope.org/browser"
+           i18n_domain="groupserver">
+  
+  
 
-  <browser:page 
-    for="gs.group.base.interfaces.IGSGroupMarker"
-    name="historicalstats.html"
-    class=".page.HistoricalGroupStats"
-    template="browser/templates/historical.pt"
-    permission="zope2.View"/>
- 
 </configure>
 
