@@ -1,11 +1,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:tal="http://xml.zope.org/namespaces/tal"
-  xmlns:metal="http://xml.zope.org/namespaces/metal"
-  metal:use-macro="context/@@groupserver_layout/page">
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="context/@@groupserver_layout/page">
   <head>
     <title metal:fill-slot="title">Posting statistics:
-    <span tal:replace="view/groupInfo/name">this group</span>:
-    <span tal:replace="view/siteInfo/name">this site</span>
+      <span tal:replace="view/groupInfo/name">this group</span>:
+      <span tal:replace="view/siteInfo/name">this site</span>
     </title>
     <link rel="up" title="This group" metal:fill-slot="metadata"
           href="#" tal:attributes="href view/groupInfo/relativeURL" />
@@ -72,7 +72,7 @@
           </tr>
         </tfoot>
         <tbody>
-          <tal:block tal:repeat="year view/get_years">
+          <tal:block tal:repeat="year view/years">
             <tal:block tal:define="n repeat/year/number;
               odd python:n%2;
               months python:view.get_months(year)">

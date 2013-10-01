@@ -41,7 +41,7 @@ class GSGroupStatsView(GroupPage):
         years.reverse()
         return years
 
-    def months(self, year):
+    def get_months(self, year):
         if (not self.stats):
             self.stats = self.get_stats()
 
