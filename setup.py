@@ -45,9 +45,23 @@ setup(name='gs.group.stats',
     zip_safe=True,
     install_requires=[
         'setuptools',
+        'pytz',
+        'sqlalchemy',
+        'zope.cachedescriptors',
+        'zope.component',
+        'zope.datetime',
+        'zope.interface',
+        'zope.schema',
+        'gs.cache',
+        'gs.config',
+        'gs.content.layout',
         'gs.database',
+        'gs.group.base',
+        'gs.group.member.join',
+        'gs.group.member.leave'
+        'gs.group.member.log',
+        'gs.viewlet',
         'Products.GSProfile'
-        # -*- Extra requirements: -*-
     ],
     entry_points="""
     # -*- Entry points: -*-
