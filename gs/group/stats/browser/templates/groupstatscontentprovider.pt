@@ -1,55 +1,29 @@
-
-<table id="gs-group-stats-table" 
-  class="noFloat"
+<span id="group-stats"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
   tal:define="view options/view;
-              months view/months;
-              sa view/display_stats">
-  <thead>
-    <tr class="year">
-      <th>&#160;</th>
-    </tr>
-    <tr class="month">
-      <th>&#160;</th>
-    </tr>
-    
-    <tr tal:repeat="stat sa"
-        tal:attributes="class python:stat[0].replace('_','-')">
-      <th><strong tal:content="python:stat[1]">Statistic Name</strong></th>
-    </tr>
-  </thead>
-  <tbody tal:define="sg python:lambda x,m: x[m[0].year].get(m[0].month, 0)">
-    <tr class="year">
-      <tal:block repeat="year view/years">
-        <th tal:define="y python:year[0];
-            nm python:year[1];
-            oe python:((y%2) and 'o') or 'e'"
-          tal:attributes="class oe; colspan python:nm*2"
-          tal:content="python:year[0]"
-          colspan="5">2012</th>
-      </tal:block>
-    </tr><!--year-->
-    <tr class="month">
-      <tal:block repeat="month view/months">
-        <th colspan="2"
-          tal:define="oe python:((month[0].year%2) and 'o') or 'e'"
-          tal:attributes="class oe; title python:month[0].strftime('%F')"
-          tal:content="python:month[0].strftime('%b')"></th>
-      </tal:block>
-    </tr><!--month-->
-    
-    <tal:block tal:repeat="stat python:sa">
-    <tr tal:attributes="class python:stat[0].replace('_','-')"
-        tal:define="result python:getattr(view, stat[0])()">
-      <tal:block repeat="month months">
-        <tal:block define="oe python:((month[0].year%2) and 'o') or 'e'">
-          <td tal:content="python:sg(result, month)"
-            tal:attributes="class oe;">?</td>
-          <td tal:attributes="class oe;">&#160;</td>
-        </tal:block>
-      </tal:block>
-    </tr>
-    </tal:block>
+    c view/groupMembersInfo/fullMemberCount;
+    plural python:c&gt;1;">
+  <span id="group-stats-membership">There 
+    <span tal:condition="plural">are</span>
+    <span tal:condition="not:plural">is</span>
+    <span class="val" tal:content="c">a few</span>
+    member<span tal:condition="plural">s</span> in
+    <span class="group">the group</span>.</span><!--group-stats-membership-->
+  <span id="group-stats-posting"
+    tal:condition="view/groupPostingStats/postsExist">
+    Normally they post around
+    <span class="val" id="group-stats-posting-mean"
+      tal:content="view/groupPostingStats/intMeanPerDay">some</span> 
+    posts each day;
+    the most they have posted is
+    <span class="val"
+      id="group-stats-posting-max"
+      tal:content="view/groupPostingStats/maxPerDay">a few</span> 
+    posts in one day.
+    <span tal:replace="view/groupPostingStats/digestMembers"/> members follow using the daily digest.
+    <span tal:replace="view/groupPostingStats/webonlyMembers"/> members follow only on the web.
+  </span><!--group-stats-posting-->
+</span><!--group-stats-->
 
-
-  </tbody>
-</table>
