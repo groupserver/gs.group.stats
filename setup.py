@@ -58,7 +58,7 @@ setup(name='gs.group.stats',
         'gs.database',
         'gs.group.base',
         'gs.group.member.join',
-        'gs.group.member.leave'
+        'gs.group.member.leave',
         'gs.group.member.log',
         'gs.viewlet',
         'Products.GSProfile'
