@@ -1,4 +1,11 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import
+#lint:disable
+from .messagequery import MessageQuery
+from .posting import GroupPostingStats
+from .queries import MembersAtDate, GroupStatsQuery
+#lint:enable
+
 # TODO: Figure out why the following is HERE
 from AccessControl import ModuleSecurityInfo
 
