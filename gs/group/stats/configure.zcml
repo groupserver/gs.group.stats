@@ -14,14 +14,14 @@
   <interface 
     interface=".interfaces.IGSGroupStatsContentProvider"
     type="zope.contentprovider.interfaces.ITALNamespaceData"/>
-  <class class=".groupstatscontentprovider.GroupStatsContentProvider">
+  <class class=".contentprovider.GroupStatsContentProvider">
     <implements interface=".interfaces.IGSGroupStatsContentProvider"/>
   </class>
   <adapter
     for="zope.interface.Interface
          zope.publisher.interfaces.browser.IDefaultBrowserLayer
          zope.interface.Interface"
-    factory=".groupstatscontentprovider.GroupStatsContentProvider"
+    factory=".contentprovider.GroupStatsContentProvider"
     provides="zope.contentprovider.interfaces.IContentProvider"
     name="groupserver.GroupStats"/>
   
