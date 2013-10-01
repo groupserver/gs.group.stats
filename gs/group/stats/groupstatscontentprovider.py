@@ -1,5 +1,4 @@
 #coding=utf-8
-from operator import add
 from zope.component import createObject
 from zope.cachedescriptors.property import Lazy
 from gs.content.base.page import SitePage
@@ -16,6 +15,7 @@ import copy
 
 from zope.datetime import parseDatetimetz
 
+
 def month_periods(interval_start, interval_end):
     start_year = interval_start.year
     end_year = interval_end.year
@@ -24,7 +24,7 @@ def month_periods(interval_start, interval_end):
 
     periods = []
 
-    for year in range(start_year, end_year+1):
+    for year in range(start_year, end_year + 1):
         first_month = 1
         last_month = 12
         if year == start_year:
@@ -32,26 +32,29 @@ def month_periods(interval_start, interval_end):
         elif year == end_year:
             last_month = end_month
 
-        for month in range(first_month, last_month+1):
-            first_weekday, number_of_days = calendar.monthrange(year,month)
+        for month in range(first_month, last_month + 1):
+            first_weekday, number_of_days = calendar.monthrange(year, month)
             periods.append((year, month, number_of_days))
 
     return periods
+
 
 def month_periods_as_datetime(month_periods):
     periods = []
     for year, month, last_day in month_periods:
         periods.append((datetime.datetime(year, month, 1, tzinfo=pytz.utc),
-                        datetime.datetime(year, month, last_day, tzinfo=pytz.utc)))
+                        datetime.datetime(year, month, last_day,
+                                            tzinfo=pytz.utc)))
     return periods
+
 
 def periods_as_dict(periods):
     pdict = {}
     for year, month, result in periods:
-        if not pdict.has_key(year):
+        if year not in pdict:
             pdict[year] = {}
-        pdict[year][month] = result    
-    
+        pdict[year][month] = result
+
     return pdict
 
 
@@ -71,17 +74,17 @@ class GroupStatsContentProvider(SiteContentProvider):
                ('max_dialogue_depth', u'Max. posts in topic'),
                ('percentage_single_post_topics', u'Single Post Topics (%)'))
 
-    
     def __init__(self, context, request, view):
         SiteContentProvider.__init__(self, context, request, view)
-         
+
         self.groupInfo = createObject('groupserver.GroupInfo', self.context)
         self.mad = MembersAtDate(self.context)
         self.gs = GroupStatsQuery()
         self.now = datetime.datetime.now(pytz.utc)
         self.earliest_date = self.mad.earliest_member_record(self.siteInfo.id,
                                                         self.groupInfo.id)
-        self.month_periods = month_periods_as_datetime(month_periods(self.earliest_date, self.now))
+        mp = month_periods(self.earliest_date, self.now)
+        self.month_periods = month_periods_as_datetime(mp)
 
         self.__updated = False
 
@@ -109,14 +112,14 @@ class GroupStatsContentProvider(SiteContentProvider):
         start_month = self.earliest_date.month
         end_month = self.now.month
         cal = []
-        for year in range(start_year, end_year+1):
+        for year in range(start_year, end_year + 1):
             first_month = 1
             last_month = 12
             if year == start_year:
                 first_month = start_month
             elif year == end_year:
                 last_month = end_month
-            cal.append((year,(last_month-first_month+1)))
+            cal.append((year, (last_month - first_month + 1)))
         cal.sort(reverse=True)
         return cal
 
@@ -129,7 +132,7 @@ class GroupStatsContentProvider(SiteContentProvider):
             leave = jl_counts.get('gs.group.member.leave', 0)
             join = jl_counts.get('gs.group.member.join', 0)
             periods.append((interval_start.year, interval_start.month,
-                            (join-leave)))
+                            (join - leave)))
         return periods_as_dict(periods)
 
     def member_average(self):
@@ -138,10 +141,10 @@ class GroupStatsContentProvider(SiteContentProvider):
             result = self.mad.average_member_count(self.siteInfo.id,
                                     self.groupInfo.id,
                                     interval_start, interval_end)
-            
+
             periods.append((interval_start.year, interval_start.month,
                             round(result, 1)))
-        
+
         return periods_as_dict(periods)
 
     def member_end_of_period(self):
@@ -170,7 +173,7 @@ class GroupStatsContentProvider(SiteContentProvider):
 
             percentage = 0.0
             if a_count and m_count:
-                percentage = float(a_count)/float(m_count) * 100.0
+                percentage = float(a_count) / float(m_count) * 100.0
 
             periods.append((interval_start.year, interval_start.month,
                             round(percentage, 1)))
@@ -217,9 +220,9 @@ class GroupStatsContentProvider(SiteContentProvider):
                                                interval_end)
             percentage = 0.0
             if at_count and spt_count:
-                percentage = float(spt_count)/float(at_count) * 100.0
+                percentage = float(spt_count) / float(at_count) * 100.0
             periods.append((interval_start.year, interval_start.month,
-                            round(percentage,1)))
+                            round(percentage, 1)))
         return periods_as_dict(periods)
 
     def authors(self):
@@ -250,7 +253,7 @@ class GroupStatsContentProvider(SiteContentProvider):
                                            interval_end)
             periods.append((interval_start.year, interval_start.month,
                            round(avgdepth, 1)))
-        
+
         return periods_as_dict(periods)
 
     def min_dialogue_depth(self):
@@ -261,7 +264,8 @@ class GroupStatsContentProvider(SiteContentProvider):
                                            self.groupInfo.id,
                                            interval_start,
                                            interval_end)
-            periods.append((interval_start.year, interval_start.month, mindepth))
+            periods.append((interval_start.year, interval_start.month,
+                            mindepth))
         return periods_as_dict(periods)
 
     def max_dialogue_depth(self):
@@ -272,8 +276,10 @@ class GroupStatsContentProvider(SiteContentProvider):
                                            self.groupInfo.id,
                                            interval_start,
                                            interval_end)
-            periods.append((interval_start.year, interval_start.month, maxdepth))
+            periods.append((interval_start.year, interval_start.month,
+                            maxdepth))
         return periods_as_dict(periods)
+
 
 class GroupStats(SitePage):
     def __init__(self, context, request):
@@ -294,8 +300,8 @@ class GroupStats(SitePage):
                                     self.interval_start, self.interval_end)
         leave = jl_counts.get('gs.group.member.leave', 0)
         join = jl_counts.get('gs.group.member.join', 0)
-        
-        return join-leave
+
+        return join - leave
 
     def member_average(self):
         mad = MembersAtDate(self.context)
@@ -310,23 +316,26 @@ class GroupStats(SitePage):
         result = self.groupStatsQuery.posts(self.siteInfo.id, self.groupInfo.id,
                                           self.interval_start,
                                           self.interval_end)
-        return result  
+        return result
 
     def active_topics(self):
-        return self.groupStatsQuery.active_topics(self.siteInfo.id, self.groupInfo.id,
-                                           self.interval_start,
-                                           self.interval_end)
-   
+        return self.groupStatsQuery.active_topics(self.siteInfo.id,
+                                                    self.groupInfo.id,
+                                                    self.interval_start,
+                                                    self.interval_end)
+
     def authors(self):
-        return self.groupStatsQuery.authors(self.siteInfo.id, self.groupInfo.id,
-                                           self.interval_start,
-                                           self.interval_end)
+        return self.groupStatsQuery.authors(self.siteInfo.id,
+                                            self.groupInfo.id,
+                                            self.interval_start,
+                                            self.interval_end)
 
     def new_topics(self):
-        return self.groupStatsQuery.new_topics(self.siteInfo.id, self.groupInfo.id,
-                                           self.interval_start,
-                                           self.interval_end)
- 
+        return self.groupStatsQuery.new_topics(self.siteInfo.id,
+                                                self.groupInfo.id,
+                                                self.interval_start,
+                                                self.interval_end)
+
     @Lazy
     def content(self):
         site_root = self.context.site_root()
@@ -338,7 +347,7 @@ class GroupStats(SitePage):
         for i in items:
             try:
                 site = getattr(self.content, i['siteId'])
-            except AttributeError, ae:
+            except AttributeError:
                 # Ignore the sites that do not exist any more
                 pass
             else:
