@@ -57,11 +57,13 @@ setup(name='gs.group.stats',
         'gs.content.layout',
         'gs.database',
         'gs.group.base',
+        'gs.group.member.base',
         'gs.group.member.join',
         'gs.group.member.leave',
         'gs.group.member.log',
         'gs.viewlet',
-        'Products.GSProfile'
+        'Products.GSProfile',
+        'Products.XWFCore',
     ],
     entry_points="""
     # -*- Entry points: -*-
