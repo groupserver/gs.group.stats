@@ -19,12 +19,12 @@ from zope.component import createObject
 from gs.cache import cache
 from gs.config import getInstanceId
 from gs.database.core import getTable, getSession
+from gs.group.member.base import get_group_userids
 from gs.group.member.join.audit import JOIN_GROUP as JOIN
 from gs.group.member.join.audit import SUBSYSTEM as JOIN_SUBSYSTEM
 from gs.group.member.leave.audit import LEAVE
 from gs.group.member.leave.audit import SUBSYSTEM as LEAVE_SUBSYSTEM
 from gs.group.member.log.queries import JoinLeaveQuery
-from Products.GSGroupMember.groupMembersInfo import GSGroupMembersInfo
 from Products.XWFCore.XWFUtils import dt_to_user_timezone
 
 
@@ -104,9 +104,8 @@ class MembersAtDate(JoinLeaveQuery):
         """
         groupInfo = createObject('groupserver.GroupInfo', self.context,
                                     group_id)
-
-        membersInfo = GSGroupMembersInfo(groupInfo.groupObj)
-        current_member_count = membersInfo.fullMemberCount
+        memberIds = get_group_userids(self.context, groupInfo)
+        current_member_count = len(memberIds)
 
         # first we measure the number of joins and leaves since the end_period
         end_to_now = self.joinleave_counts(site_id, group_id, end_period,
