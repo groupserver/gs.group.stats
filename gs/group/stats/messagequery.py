@@ -1,4 +1,17 @@
 # -*- coding: utf-8 -*-
+##############################################################################
+#
+# Copyright © 2013 OnlineGroups.net and Contributors.
+# All Rights Reserved.
+#
+# This software is subject to the provisions of the Zope Public License,
+# Version 2.1 (ZPL).  A copy of the ZPL should accompany this distribution.
+# THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
+# WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
+# FOR A PARTICULAR PURPOSE.
+#
+##############################################################################
 from datetime import date
 import sqlalchemy as sa
 from gs.database import getSession
@@ -39,7 +52,7 @@ class MessageQuery(MLMQ):
 
         years = {}
         for row in rows:
-            if row['year'] not in years.keys():
+            if row['year'] not in years:
                 years[row['year']] = {}
         for row in rows:
             years[row['year']][row['month']] = {'post_count': row['post_count']}
