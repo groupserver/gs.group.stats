@@ -17,15 +17,15 @@ from zope.cachedescriptors.property import Lazy
 from zope.component import createObject
 from zope.contentprovider.interfaces import UpdateNotCalled
 from zope.pagetemplate.pagetemplatefile import PageTemplateFile
-from gs.group.base.contentprovider import GroupContentProvider
+from gs.viewlet import SiteContentProvider  # --=mpj17=-- Deliberly *site*
 from Products.GSGroupMember.groupMembersInfo import GSGroupMembersInfo
 from .posting import GroupPostingStats
 
 
-class GroupStatsContentProvider(GroupContentProvider):
+class GroupStatsContentProvider(SiteContentProvider):
 
     def __init__(self, context, request, view):
-        GroupContentProvider.__init__(self, context, request, view)
+        super(GroupStatsContentProvider, self).__init__(context, request, view)
         self.__updated = False
 
     def update(self):
