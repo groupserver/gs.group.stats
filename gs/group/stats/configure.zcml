@@ -18,12 +18,12 @@
     <implements interface=".interfaces.IGSGroupStatsContentProvider"/>
   </class>
   <adapter
+    name="groupserver.GroupStats"
     for="zope.interface.Interface
          zope.publisher.interfaces.browser.IDefaultBrowserLayer
          zope.interface.Interface"
     factory=".contentprovider.GroupStatsContentProvider"
-    provides="zope.contentprovider.interfaces.IContentProvider"
-    name="groupserver.GroupStats"/>
+    provides="zope.contentprovider.interfaces.IContentProvider" />
   
 </configure>
 

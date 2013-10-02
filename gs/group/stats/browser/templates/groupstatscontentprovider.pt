@@ -1,10 +1,7 @@
 <span id="group-stats"
-  xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:tal="http://xml.zope.org/namespaces/tal"
-  xmlns:metal="http://xml.zope.org/namespaces/metal"
-  tal:define="view options/view;
-    c view/groupMembersInfo/fullMemberCount;
-    plural python:c&gt;1;">
+      tal:define="view options/view;
+                  c view/groupMembersInfo/fullMemberCount;
+                  plural python:c&gt;1;">
   <span id="group-stats-membership">There 
     <span tal:condition="plural">are</span>
     <span tal:condition="not:plural">is</span>
