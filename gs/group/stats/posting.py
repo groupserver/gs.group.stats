@@ -31,15 +31,19 @@ class GroupPostingStats(object):
         return retval
 
     def update(self):
-        return None
+        pass
 
+    @Lazy
     def digestMembers(self):
         mad = MembersAtDate(self.context)
-        return mad.members_on_digest(self.siteInfo.id, self.groupInfo.id)
+        retval = mad.members_on_digest(self.siteInfo.id, self.groupInfo.id)
+        return retval
 
+    @Lazy
     def webonlyMembers(self):
         mad = MembersAtDate(self.context)
-        return mad.members_on_webonly(self.siteInfo.id, self.groupInfo.id)
+        retval = mad.members_on_webonly(self.siteInfo.id, self.groupInfo.id)
+        return retval
 
     @Lazy
     def postStats(self):
