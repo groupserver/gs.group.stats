@@ -38,7 +38,6 @@ class GroupStatsContentProvider(SiteContentProvider):
     def render(self):
         if not self.__updated:
             raise UpdateNotCalled
-
         pageTemplate = PageTemplateFile(self.pageTemplateFileName)
         return pageTemplate(view=self)
 

@@ -44,18 +44,14 @@ The maximum number of posts is used to give a sense of the
 standard-deviation about the mean. The latter was considered a touch too
 complex for a general-purpose content provider.
 
-Another content provider ``groupserver.GroupStatsExtended`` provides the
-same information, as well as the number of members who use the daily
-digest, or follow the group using the Web only.
-
-To use either content provider from within the *group* context call it as
+To use the content provider from *within* the group context call it as
 follows::
 
       <p tal:content="structure provider:groupserver.GroupStats">
         Summary of the stats
       </p>
 
-Unusually, both content providers can be used from outside the group
+Unusually, the content provider can be used from *outside* the group
 context, by passing ``groupId`` to the content provider::
 
       <p define="groupId view/groupInfo/id"

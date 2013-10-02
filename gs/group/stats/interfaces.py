@@ -30,11 +30,3 @@ class IGSGroupStatsContentProvider(IContentProvider):
         u'render the status message.',
         required=False,
         default="browser/templates/stats.pt")
-
-
-class IGSGroupStatsExtendedContentProvider(IGSGroupStatsContentProvider):
-    pageTemplateFileName = ASCIILine(title=u"Page Template File Name",
-        description=u'The name of the ZPT file that is used to '
-        u'render the status message.',
-        required=False,
-        default="browser/templates/extendedstats.pt")

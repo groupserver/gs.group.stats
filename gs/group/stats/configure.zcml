@@ -25,20 +25,5 @@
     factory=".contentprovider.GroupStatsContentProvider"
     provides="zope.contentprovider.interfaces.IContentProvider" />
 
-  <!-- The extended group stats -->
-  <interface 
-    interface=".interfaces.IGSGroupStatsExtendedContentProvider"
-    type="zope.contentprovider.interfaces.ITALNamespaceData"/>
-  <class class=".contentprovider.GroupStatsContentProvider">
-    <implements interface=".interfaces.IGSGroupStatsExtendedContentProvider" />
-  </class>
-  <adapter
-    name="groupserver.GroupStatsExtended"
-    for="zope.interface.Interface
-         zope.publisher.interfaces.browser.IDefaultBrowserLayer
-         zope.interface.Interface"
-    factory=".contentprovider.GroupStatsContentProvider"
-    provides="zope.contentprovider.interfaces.IContentProvider" />
-  
 </configure>
 
