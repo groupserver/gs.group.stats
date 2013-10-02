@@ -31,8 +31,7 @@
     </ul>
     <tal:block metal:fill-slot="body">
       <h1>Posting statistics</h1>
-      <p define="groupId view/groupInfo/id"
-         tal:content="structure provider:groupserver.GroupStats">
+      <p tal:content="structure provider:groupserver.GroupStats">
         Summary of the stats
       </p>
       <p class="intro">
