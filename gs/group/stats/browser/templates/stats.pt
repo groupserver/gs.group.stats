@@ -2,22 +2,21 @@
       tal:define="view options/view;
                   c view/groupMembersInfo/fullMemberCount;
                   plural python:c&gt;1;">
-  <span class="gs-group-stats-summary-membership">There 
-    <span tal:condition="plural">are</span>
-    <span tal:condition="not:plural">is</span>
-    <span class="val" tal:content="c">a few</span>
-    member<span tal:condition="plural">s</span> in
-    <span class="group">the group</span>.</span><!--group-stats-membership-->
+  <span class="gs-group-stats-summary-membership">There
+  <span tal:condition="plural">are</span>
+  <span tal:condition="not:plural">is</span>
+  <span class="val" tal:content="c">a few</span>
+  member<span tal:condition="plural">s</span> in
+  <span class="group">the group</span>.</span><!--group-stats-membership-->
   <span class="gs-group-stats-summary-posting"
-    tal:condition="view/groupPostingStats/postsExist">
+        tal:condition="view/groupPostingStats/postsExist">
     Normally they post around
-    <span class="val" class="gs-group-stats-summary-posting-mean"
-      tal:content="view/groupPostingStats/intMeanPerDay">some</span> 
+    <span class="val gs-group-stats-summary-posting-mean"
+          tal:content="view/groupPostingStats/intMeanPerDay">some</span>
     posts each day;
     the most they have posted is
-    <span class="val"
-      class="gs-group-stats-summary-posting-max"
-      tal:content="view/groupPostingStats/maxPerDay">a few</span> 
+    <span class="val gs-group-stats-summary-posting-max"
+          tal:content="view/groupPostingStats/maxPerDay">a few</span>
     posts in one day.
   </span><!--gs-group-stats-summary-posting-->
 </span><!--gs-group-stats-summary-->
