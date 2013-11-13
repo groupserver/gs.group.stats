@@ -2,7 +2,7 @@
 <configure xmlns="http://namespaces.zope.org/zope"
            xmlns:browser="http://namespaces.zope.org/browser"
            i18n_domain="groupserver">
-  
+
   <browser:page
     for="gs.group.base.interfaces.IGSGroupMarker"
     name="stats.html"
@@ -11,7 +11,7 @@
     permission="zope2.View" />
 
   <!--The Group Stats-->
-  <interface 
+  <interface
     interface=".interfaces.IGSGroupStatsContentProvider"
     type="zope.contentprovider.interfaces.ITALNamespaceData"/>
   <class class=".contentprovider.GroupStatsContentProvider">
@@ -26,4 +26,3 @@
     provides="zope.contentprovider.interfaces.IContentProvider" />
 
 </configure>
-
