@@ -21,8 +21,8 @@ version = get_version()
 setup(name='gs.group.stats',
     version=version,
     description="Statistics for GroupServer groups",
-    long_description=open("README.txt").read() + "\n" +
-                      open(os.path.join("docs", "HISTORY.txt")).read(),
+    long_description=open("README.rst").read() + "\n" +
+                      open(os.path.join("docs", "HISTORY.rst")).read(),
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         "Environment :: Web Environment",
