@@ -22,8 +22,8 @@ from gs.database.core import getTable, getSession
 from gs.group.member.base import get_group_userids
 from gs.group.member.join.audit import JOIN_GROUP as JOIN
 from gs.group.member.join.audit import SUBSYSTEM as JOIN_SUBSYSTEM
-from gs.group.member.leave.audit import LEAVE
-from gs.group.member.leave.audit import SUBSYSTEM as LEAVE_SUBSYSTEM
+from gs.group.member.leave.base.audit import LEAVE
+from gs.group.member.leave.base.audit import SUBSYSTEM as LEAVE_SUBSYSTEM
 from gs.group.member.log.queries import JoinLeaveQuery
 from Products.XWFCore.XWFUtils import dt_to_user_timezone
 
