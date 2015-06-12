@@ -19,7 +19,9 @@ from Products.XWFMailingListManager.queries import MessageQuery as MLMQ
 
 
 class MessageQuery(MLMQ):
-    def posting_stats(self, site_id, group_ids=[]):
+    def posting_stats(self, site_id, group_ids=None):
+        if group_ids is None:
+            group_ids = []
         retval = []
 
         pt = self.postTable
