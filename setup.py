@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-##############################################################################
+############################################################################
 #
-# Copyright © 2013 OnlineGroups.net and Contributors.
+# Copyright © 2012, 2015 OnlineGroups.net and Contributors.
+#
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -11,18 +12,26 @@
 # WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
 # FOR A PARTICULAR PURPOSE.
 #
-##############################################################################
+############################################################################
+import codecs
 import os
 from setuptools import setup, find_packages
 from version import get_version
 
+name = 'gs.group.member.log'
 version = get_version()
 
-setup(name='gs.group.stats',
+with codecs.open('README.rst', encoding='utf-8') as f:
+    long_description = f.read()
+with codecs.open(os.path.join("docs", "HISTORY.rst"),
+                 encoding='utf-8') as f:
+    long_description += '\n' + f.read()
+
+setup(
+    name=name,
     version=version,
     description="Statistics for GroupServer groups",
-    long_description=open("README.rst").read() + "\n" +
-                      open(os.path.join("docs", "HISTORY.rst")).read(),
+    long_description=long_description,
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         "Environment :: Web Environment",
@@ -30,28 +39,32 @@ setup(name='gs.group.stats',
         "Intended Audience :: Developers",
         'License :: OSI Approved :: Zope Public License',
         "Natural Language :: English",
-        "Operating System :: POSIX :: Linux"
+        "Operating System :: POSIX :: Linux",
         "Programming Language :: Python",
         "Topic :: Software Development :: Libraries :: Python Modules",
-      ],
-    keywords='stats groupserver group',
+    ],
+    keywords='stats, groupserver, group',
     author='Richard Waid',
     author_email='richard@onlinegroups.net',
-    url='http://groupserver.org/',
+    maintainer='Michael JasonSmith',
+    maintainer_email='mpj17@onlinegroups.net',
+    url='https://github.com/groupserver/{0}'.format(name),
     license='ZPL 2.1',
     packages=find_packages(exclude=['ez_setup']),
-    namespace_packages=['gs', 'gs.group'],
+    namespace_packages=['.'.join(name.split('.')[:i])
+                        for i in range(1, len(name.split('.')))],
     include_package_data=True,
     zip_safe=False,
     install_requires=[
         'setuptools',
         'pytz',
-        'sqlalchemy',
+        'SQLAlchemy',
         'zope.browserpage',
         'zope.cachedescriptors',
         'zope.component',
-        'zope.datetime',
+        'zope.contentprovider',
         'zope.interface',
+        'zope.pagetemplate',
         'zope.tal',
         'zope.tales',
         'zope.schema',
