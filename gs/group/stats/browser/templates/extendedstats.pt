@@ -2,7 +2,7 @@
       tal:define="view options/view;
                   c view/groupMembersInfo/fullMemberCount;
                   plural python:c&gt;1;">
-  <span id="group-stats-membership">There 
+  <span id="group-stats-membership">There
     <span tal:condition="plural">are</span>
     <span tal:condition="not:plural">is</span>
     <span class="val" tal:content="c">a few</span>
@@ -12,15 +12,14 @@
     tal:condition="view/groupPostingStats/postsExist">
     Normally they post around
     <span class="val" id="group-stats-posting-mean"
-      tal:content="view/groupPostingStats/intMeanPerDay">some</span> 
+      tal:content="view/groupPostingStats/intMeanPerDay">some</span>
     posts each day;
     the most they have posted is
     <span class="val"
       id="group-stats-posting-max"
-      tal:content="view/groupPostingStats/maxPerDay">a few</span> 
+      tal:content="view/groupPostingStats/maxPerDay">a few</span>
     posts in one day.
     <span tal:replace="view/groupPostingStats/digestMembers"/> members follow using the daily digest.
     <span tal:replace="view/groupPostingStats/webonlyMembers"/> members follow only on the web.
   </span><!--group-stats-posting-->
 </span><!--group-stats-->
-
