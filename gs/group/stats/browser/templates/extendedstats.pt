@@ -1,6 +1,6 @@
 <span id="group-stats"
       tal:define="view options/view;
-                  c view/groupMembersInfo/fullMemberCount;
+                  c python:len(view.fullMembers);
                   plural python:c&gt;1;">
   <span id="group-stats-membership">There
     <span tal:condition="plural">are</span>

@@ -1,6 +1,6 @@
 <span class="gs-group-stats-summary"
       tal:define="view options/view;
-                  c view/groupMembersInfo/fullMemberCount;
+                  c python:len(view.fullMembers);
                   plural python:c&gt;1;">
   <span class="gs-group-stats-summary-membership">There
   <span tal:condition="plural">are</span>
