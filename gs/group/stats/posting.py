@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-# Copyright © 2013 OnlineGroups.net and Contributors.
+# Copyright © 2013, 2016 OnlineGroups.net and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -12,7 +12,8 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-from __future__ import absolute_import
+from __future__ import absolute_import, unicode_literals, print_function, division
+from operator import itemgetter
 from zope.cachedescriptors.property import Lazy
 from zope.component import createObject
 from .messagequery import MessageQuery
@@ -48,7 +49,7 @@ class GroupPostingStats(object):
     @Lazy
     def postStats(self):
         retval = self.query.posts_per_day(self.groupInfo.id)
-        retval.sort(key=lambda x: x['date'])
+        retval.sort(key=itemgetter('date'))
         return retval
 
     @Lazy
@@ -82,7 +83,7 @@ class GroupPostingStats(object):
     def meanPerDay(self):
         deltaT = self.postStats[-1]['date'] - self.postStats[0]['date']
         if deltaT.days > 0:
-            nPosts = float(sum([s['n_posts'] for s in self.postStats]))
+            nPosts = sum([s['n_posts'] for s in self.postStats])
             mean = nPosts / deltaT.days
         else:
             mean = 0.0
