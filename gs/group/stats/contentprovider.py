@@ -50,7 +50,7 @@ class GroupStatsContentProvider(SiteContentProvider):
         #   called from outside the group context. Because of this it
         #   can be passed the identifier for the group, and it uses
         #   that to find the group and render the right statistics.
-        if self.groupId:
+        if hasattr(self, 'groupId') and self.groupId:
             retval = createObject('groupserver.GroupInfo', self.context, self.groupId)
         else:
             # We have no groupId passed in from the surrounding page
