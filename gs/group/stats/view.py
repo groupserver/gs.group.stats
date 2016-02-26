@@ -40,8 +40,5 @@ class GSGroupStatsView(GroupPage):
         return years
 
     def get_months(self, year):
-        if year in self.stats:
-            retval = self.stats[year]
-        else:
-            retval = {}
+        retval = self.stats.get(year, {})
         return retval
