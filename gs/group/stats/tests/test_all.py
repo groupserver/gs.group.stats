@@ -15,7 +15,8 @@
 from __future__ import absolute_import, unicode_literals
 from unittest import TestSuite, main as unittest_main
 from gs.group.stats.tests.contentprovider import TestGroupStatsContentProvider
-testCases = (TestGroupStatsContentProvider, )
+from gs.group.stats.tests.posting import TestGroupPostingStats
+testCases = (TestGroupStatsContentProvider, TestGroupPostingStats, )
 
 
 def load_tests(loader, tests, pattern):
