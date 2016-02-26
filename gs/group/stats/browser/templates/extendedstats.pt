@@ -7,8 +7,8 @@
   <span class="gs-group-stats-summary-membership" tal:condition="plural"
         i18n:translate="summary-members-plural">
     There are
-    <b><span class="val" i18n:name="n" tal:content="c">a few</span> members</b>
-    of
+    <b><span class="val" i18n:name="n" tal:content="c">a few</span></b>
+    members of
     <span class="group" tal:content="view/groupInfo/name"
           i18n:name="groupName">the group</span>.
   </span><!--gs-group-stats-summary-membership plural-->

@@ -103,7 +103,7 @@ Resources
 =========
 
 - Translations:
-  https://www.transifex.com/projects/p/gs-group-stats/
+  https://www.transifex.com/groupserver/gs-group-stats/
 - Code repository: https://github.com/groupserver/gs.site.stats/
 - Questions and comments to
   http://groupserver.org/groups/development/

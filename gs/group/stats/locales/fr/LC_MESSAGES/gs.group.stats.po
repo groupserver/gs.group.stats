@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gs.group.stats\n"
-"POT-Creation-Date: 2016-02-26 18:45+0000\n"
-"PO-Revision-Date: 2016-02-26 19:17+0000\n"
+"POT-Creation-Date: 2016-02-26 19:23+0000\n"
+"PO-Revision-Date: 2016-02-26 19:38+0000\n"
 "Last-Translator: Michael JasonSmith <mpj17@ldots.org>\n"
 "Language-Team: French (http://www.transifex.com/groupserver/gs-group-stats/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -19,12 +19,12 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 
 #. Default: "${n} members follow the group using the daily digest."
-#: ./browser/templates/extendedstats.pt:35
+#: ./browser/templates/extendedstats.pt:34
 msgid "detail-members-digest"
 msgstr ""
 
 #. Default: "${n} members follow the group using the web archive only."
-#: ./browser/templates/extendedstats.pt:40
+#: ./browser/templates/extendedstats.pt:39
 msgid "detail-members-web"
 msgstr ""
 
@@ -69,18 +69,18 @@ msgstr "Statistiques des messages: ${groupName}: ${siteName}"
 msgid "posting-statistics"
 msgstr "Statistiques des messages"
 
-#. Default: "There are ${n} members of ${groupName}."
-#: ./browser/templates/extendedstats.pt:13 ./browser/templates/stats.pt:12
+#. Default: "There are <b>${n}</b> members of ${groupName}."
+#: ./browser/templates/extendedstats.pt:12 ./browser/templates/stats.pt:12
 msgid "summary-members-plural"
-msgstr ""
+msgstr "Il y a <b>${n} membres</b> de ${groupName}."
 
-#. Default: "Normally there are around ${n} posts each day; the most they have
-#. posted is ${m} posts in one day."
-#: ./browser/templates/extendedstats.pt:30 ./browser/templates/stats.pt:29
+#. Default: "Normally there are around <b>${n} posts each day;</b> the most
+#. they have posted is ${m} posts in one day."
+#: ./browser/templates/extendedstats.pt:29 ./browser/templates/stats.pt:29
 msgid "summary-members-posts"
-msgstr ""
+msgstr "Habituellement, ils postent environ ${n} sujets par jour ; le maximum posté en une seule journée a été de ${m}."
 
-#. Default: "There is one member of ${groupName}."
-#: ./browser/templates/extendedstats.pt:19 ./browser/templates/stats.pt:18
+#. Default: "There is <b>one member</b> of ${groupName}."
+#: ./browser/templates/extendedstats.pt:18 ./browser/templates/stats.pt:18
 msgid "summary-members-singular"
-msgstr ""
+msgstr "Il y a <b>un membre</b> de ${groupName}."
