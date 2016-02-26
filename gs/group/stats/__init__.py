@@ -5,6 +5,8 @@ from .messagequery import MessageQuery
 from .posting import GroupPostingStats
 from .queries import MembersAtDate, GroupStatsQuery
 #lint:enable
+from zope.i18nmessageid import MessageFactory
+GSMessageFactory = MessageFactory('gs.group.stats')
 
 # TODO: Figure out why the following is HERE
 from AccessControl import ModuleSecurityInfo

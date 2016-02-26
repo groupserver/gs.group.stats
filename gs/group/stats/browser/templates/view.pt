@@ -1,11 +1,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="gs.group.stats"
       metal:use-macro="context/@@groupserver_layout/page">
   <head>
-    <title metal:fill-slot="title">Posting statistics:
-      <span tal:replace="view/groupInfo/name">this group</span>:
-      <span tal:replace="view/siteInfo/name">this site</span>
+    <title metal:fill-slot="title" i18n:translate="page-title">
+      Posting statistics:
+      <span i18n:name="groupName"
+            tal:replace="view/groupInfo/name">this group</span>:
+      <span i18n:name="siteName"
+            tal:replace="view/siteInfo/name">this site</span>
     </title>
     <link rel="up" title="This group" metal:fill-slot="metadata"
           href="#" tal:attributes="href view/groupInfo/relativeURL" />
@@ -25,21 +30,21 @@
           <strong tal:content="view/groupInfo/name">This group</strong>
         </a>
       </li>
-      <li>
+      <li i18n:translate="posting-statistics">
         Posting statistics
       </li>
     </ul>
     <tal:block metal:fill-slot="body">
-      <h1>Posting statistics</h1>
+      <h1 i18n:translate="posting-statistics">Posting statistics</h1>
       <p tal:define="pageTemplateFileName string:browser/templates/extendedstats.pt"
          tal:content="structure provider:groupserver.GroupStats">
         Summary of the stats
       </p>
-      <p class="intro">
+      <p class="intro muted" i18n:translate="page-intro">
         The table below shows the number of posts made every month to
         <a tal:attributes="href view/groupInfo/relativeURL;"
            tal:content="view/groupInfo/name"
-           class="group" href="#">this group</a>,
+           class="group" href="#" i18n:name="groupName">this group</a>,
         and the number of distinct authors who posted.
       </p>
       <table class="table">
@@ -47,10 +52,11 @@
           <tr>
             <th></th>
             <th></th>
-            <th colspan="12">Month</th>
+            <th colspan="12"
+                i18n:translate="page-table-heading-month">Month</th>
           </tr>
           <tr style="border-bottom: thin solid black;">
-            <th>Year</th>
+            <th i18n:translate="page-table-heading-year">Year</th>
             <th></th>
             <tal:block tal:repeat="m python:range(1, 13)">
               <th tal:content="m"/>
@@ -59,7 +65,7 @@
         </thead>
         <tfoot>
           <tr style="border-top: thin solid black;">
-            <th>Year</th>
+            <th i18n:translate="page-table-heading-year">Year</th>
             <th></th>
             <tal:block tal:repeat="m python:range(1, 13)">
               <th tal:content="m"/>
@@ -68,7 +74,8 @@
           <tr>
             <th></th>
             <th></th>
-            <th colspan="12">Month</th>
+            <th colspan="12"
+              i18n:translate="page-table-heading-month">Month</th>
           </tr>
         </tfoot>
         <tbody>
@@ -79,7 +86,7 @@
               <tr tal:attributes="id string:posts-year-${year};
                 class python:odd and 'posts odd' or 'posts even'">
                 <th class="year" rowspan="2" tal:content="year">year</th>
-                <th>Posts</th>
+                <th i18n:translate="page-table-heading-posts">Posts</th>
                 <tal:block tal:repeat="m python:range(1, 13)">
                   <td tal:define="mVal python:months.get(m, {})"
                     tal:content="mVal/post_count | nothing"
@@ -90,8 +97,10 @@
                 tal:attributes="id string:users-year-${year};
                 class python:odd and 'users odd' or 'users even'">
                 <th>
-                  <acronym 
-                    title="Users who posted each month">Authors</acronym>
+                  <acronym
+                    i18n:translate="page-table-heading-authors"
+                    i18n:attributes="title page-table-heading-authors-desc"
+                    title="Distinct users who posted each month">Authors</acronym>
                 </th>
                 <tal:block tal:repeat="m python:range(1, 13)">
                   <td tal:define="mVal python:months.get(m, {})"
@@ -106,4 +115,3 @@
     </tal:block>
   </body>
 </html>
-
