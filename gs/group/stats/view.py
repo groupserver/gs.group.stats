@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-# Copyright © 2013 OnlineGroups.net and Contributors.
+# Copyright © 2013, 2016 OnlineGroups.net and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -12,7 +12,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-from __future__ import absolute_import
+from __future__ import absolute_import, unicode_literals, print_function
 from zope.cachedescriptors.property import Lazy
 from gs.group.base import GroupPage
 from .messagequery import MessageQuery
@@ -30,14 +30,12 @@ class GSGroupStatsView(GroupPage):
 
     @Lazy
     def stats(self):
-        retval = self.messageQuery.posting_stats(self.siteInfo.get_id(),
-                                                [self.groupInfo.get_id()])
+        retval = self.messageQuery.posting_stats(self.siteInfo.get_id(), [self.groupInfo.get_id()])
         return retval
 
     @Lazy
     def years(self):
-        years = self.stats.keys()
-        years.sort()
+        years = sorted(self.stats.keys())
         years.reverse()
         return years
 
