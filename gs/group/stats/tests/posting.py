@@ -21,6 +21,11 @@ from gs.group.stats.posting import (GroupPostingStats, )
 
 class TestGroupPostingStats(TestCase):
     '''Test the ``GroupPostingStats`` class'''
+    def setUp(self):
+        self.sortedPosts = [
+            self.stat(date(2016, 2, 26), 6), self.stat(date(2016, 2, 27), 7),
+            self.stat(date(2016, 2, 28), 5), self.stat(date(2016, 2, 29), 9), ]
+
     @staticmethod
     def stat(d, n):
         retval = {'date': d, 'n_posts': n}
@@ -30,14 +35,13 @@ class TestGroupPostingStats(TestCase):
     def test_postStats(self, m_q):
         'Test that that the post-stats are sorted by date'
         m_q().posts_per_day.return_value = [
-            self.stat(date(2016, 2, 1), 5), self.stat(date(2016, 1, 1), 7),
-            self.stat(date(2016, 3, 1), 2), self.stat(date(2015, 12, 1), 9)]
+            self.sortedPosts[1], self.sortedPosts[0], self.sortedPosts[3], self.sortedPosts[2], ]
         g = GroupPostingStats(MagicMock())
         r = g.postStats
 
         self.assertEqual(4, len(r))
-        self.assertEqual(9, r[0]['n_posts'])  # The 2015-12-01 entry
-        self.assertEqual(2, r[-1]['n_posts'])  # The 2016-03-01 entry
+        self.assertEqual(6, r[0]['n_posts'])  # The 2016-02-26 entry
+        self.assertEqual(9, r[-1]['n_posts'])  # The 2016-02-29 entry
 
     @patch.object(GroupPostingStats, 'postStats', new_callable=PropertyMock)
     def test_meanPerDay_none(self, m_pS):
@@ -51,9 +55,7 @@ class TestGroupPostingStats(TestCase):
     @patch.object(GroupPostingStats, 'postStats', new_callable=PropertyMock)
     def test_meanPerDay(self, m_pS):
         'Test the mean posts-per-day'
-        m_pS.return_value = [
-            self.stat(date(2016, 2, 26), 6), self.stat(date(2016, 2, 27), 7),
-            self.stat(date(2016, 2, 28), 5), self.stat(date(2016, 2, 29), 9), ]
+        m_pS.return_value = self.sortedPosts
         g = GroupPostingStats(MagicMock())
         r = g.meanPerDay
 
@@ -80,9 +82,7 @@ class TestGroupPostingStats(TestCase):
     @patch.object(GroupPostingStats, 'postStats', new_callable=PropertyMock)
     def test_minPerDay(self, m_pS):
         'Test the minPerDay property'
-        m_pS.return_value = [
-            self.stat(date(2016, 2, 26), 6), self.stat(date(2016, 2, 27), 7),
-            self.stat(date(2016, 2, 28), 5), self.stat(date(2016, 2, 29), 9), ]
+        m_pS.return_value = self.sortedPosts
         g = GroupPostingStats(MagicMock())
         r = g.minPerDay
 
@@ -91,9 +91,7 @@ class TestGroupPostingStats(TestCase):
     @patch.object(GroupPostingStats, 'postStats', new_callable=PropertyMock)
     def test_maxPerDay(self, m_pS):
         'Test the maxPerDay property'
-        m_pS.return_value = [
-            self.stat(date(2016, 2, 26), 6), self.stat(date(2016, 2, 27), 7),
-            self.stat(date(2016, 2, 28), 5), self.stat(date(2016, 2, 29), 9), ]
+        m_pS.return_value = self.sortedPosts
         g = GroupPostingStats(MagicMock())
         r = g.maxPerDay
 
