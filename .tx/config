@@ -1,0 +1,9 @@
+[main]
+host = https://www.transifex.com
+
+[gs-group-stats.gs-group-stats-pot]
+file_filter = gs/group/stats/locales/<lang>/LC_MESSAGES/gs.group.stats.po
+source_file = gs/group/stats/locales/en/LC_MESSAGES/gs.group.stats.po
+source_lang = en
+type = PO
+
