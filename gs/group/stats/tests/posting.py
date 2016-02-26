@@ -76,3 +76,25 @@ class TestGroupPostingStats(TestCase):
         r = g.intMeanPerDay
 
         self.assertEqual(5, r)
+
+    @patch.object(GroupPostingStats, 'postStats', new_callable=PropertyMock)
+    def test_minPerDay(self, m_pS):
+        'Test the minPerDay property'
+        m_pS.return_value = [
+            self.stat(date(2016, 2, 26), 6), self.stat(date(2016, 2, 27), 7),
+            self.stat(date(2016, 2, 28), 5), self.stat(date(2016, 2, 29), 9), ]
+        g = GroupPostingStats(MagicMock())
+        r = g.minPerDay
+
+        self.assertEqual(5, r)
+
+    @patch.object(GroupPostingStats, 'postStats', new_callable=PropertyMock)
+    def test_maxPerDay(self, m_pS):
+        'Test the maxPerDay property'
+        m_pS.return_value = [
+            self.stat(date(2016, 2, 26), 6), self.stat(date(2016, 2, 27), 7),
+            self.stat(date(2016, 2, 28), 5), self.stat(date(2016, 2, 29), 9), ]
+        g = GroupPostingStats(MagicMock())
+        r = g.maxPerDay
+
+        self.assertEqual(9, r)
