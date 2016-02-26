@@ -38,3 +38,41 @@ class TestGroupPostingStats(TestCase):
         self.assertEqual(4, len(r))
         self.assertEqual(9, r[0]['n_posts'])  # The 2015-12-01 entry
         self.assertEqual(2, r[-1]['n_posts'])  # The 2016-03-01 entry
+
+    @patch.object(GroupPostingStats, 'postStats', new_callable=PropertyMock)
+    def test_meanPerDay_none(self, m_pS):
+        'Test the mean posts-per-day value if there is no time-difference'
+        m_pS.return_value = [self.stat(date(2016, 2, 1), 5), ]
+        g = GroupPostingStats(MagicMock())
+        r = g.meanPerDay
+
+        self.assertEqual(0.0, r)
+
+    @patch.object(GroupPostingStats, 'postStats', new_callable=PropertyMock)
+    def test_meanPerDay(self, m_pS):
+        'Test the mean posts-per-day'
+        m_pS.return_value = [
+            self.stat(date(2016, 2, 26), 6), self.stat(date(2016, 2, 27), 7),
+            self.stat(date(2016, 2, 28), 5), self.stat(date(2016, 2, 29), 9), ]
+        g = GroupPostingStats(MagicMock())
+        r = g.meanPerDay
+
+        self.assertEqual(9, r)
+
+    @patch.object(GroupPostingStats, 'meanPerDay', new_callable=PropertyMock)
+    def test_intMeanPerDay_round_up(self, m_mPD):
+        'Test the mean posts-per-day round up'
+        m_mPD.return_value = 5.6
+        g = GroupPostingStats(MagicMock())
+        r = g.intMeanPerDay
+
+        self.assertEqual(6, r)
+
+    @patch.object(GroupPostingStats, 'meanPerDay', new_callable=PropertyMock)
+    def test_intMeanPerDay_round_down(self, m_mPD):
+        'Test the mean posts-per-day round down'
+        m_mPD.return_value = 5.4
+        g = GroupPostingStats(MagicMock())
+        r = g.intMeanPerDay
+
+        self.assertEqual(5, r)
