@@ -3,8 +3,7 @@
   xmlns:i18n="http://xml.zope.org/namespaces/i18n"
   i18n:domain="gs.group.stats"
   class="gs-group-stats-summary"
-  tal:define="view options/view; c python:len(view.fullMembers);
-              plural python:c&gt;1;">
+  tal:define="c python:len(view.fullMembers); plural python:c&gt;1;">
   <span class="gs-group-stats-summary-membership" tal:condition="plural"
         i18n:translate="summary-members-plural">
     There are <span class="val" i18n:name="n" tal:content="c">a few</span>

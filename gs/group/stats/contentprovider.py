@@ -13,10 +13,10 @@
 #
 ##############################################################################
 from __future__ import absolute_import, unicode_literals, print_function
+from zope.browserpage import ViewPageTemplateFile
 from zope.cachedescriptors.property import Lazy
 from zope.component import createObject
 from zope.contentprovider.interfaces import UpdateNotCalled
-from zope.pagetemplate.pagetemplatefile import PageTemplateFile
 from gs.group.member.base import FullMembers
 from gs.viewlet import SiteContentProvider  # --=mpj17=-- Deliberly *site*
 from .posting import GroupPostingStats
@@ -37,8 +37,8 @@ class GroupStatsContentProvider(SiteContentProvider):
     def render(self):
         if not self.__updated:
             raise UpdateNotCalled
-        pageTemplate = PageTemplateFile(self.pageTemplateFileName)
-        return pageTemplate(view=self)
+        pageTemplate = ViewPageTemplateFile(self.pageTemplateFileName)
+        return pageTemplate(self)
 
     #########################################
     # Non standard methods below this point #

@@ -3,19 +3,18 @@
   xmlns:i18n="http://xml.zope.org/namespaces/i18n"
   i18n:domain="gs.group.stats"
   id="group-stats"
-  tal:define="view options/view; c python:len(view.fullMembers);
-              plural python:c&gt;1;">
+  tal:define="c python:len(view.fullMembers); plural python:c&gt;1;">
   <span class="gs-group-stats-summary-membership" tal:condition="plural"
         i18n:translate="summary-members-plural">
     There are
-    <span class="val" i18n:name="n" tal:content="c">a few</span>
-    members of
+    <b><span class="val" i18n:name="n" tal:content="c">a few</span> members</b>
+    of
     <span class="group" tal:content="view/groupInfo/name"
           i18n:name="groupName">the group</span>.
   </span><!--gs-group-stats-summary-membership plural-->
   <span class="gs-group-stats-summary-membership" tal:condition="not:plural"
         i18n:translate="summary-members-singular">
-    There is one member of
+    There is <b>one member</b> of
     <span class="group" tal:content="view/groupInfo/name"
           i18n:name="groupName">the group</span>.
   </span><!--gs-group-stats-summary-membership not:plural-->
@@ -23,10 +22,10 @@
         tal:condition="view/groupPostingStats/postsExist"
         i18n:translate="summary-members-posts">
     Normally there are around
-    <span class="val gs-group-stats-summary-posting-mean"
+    <b><span class="val gs-group-stats-summary-posting-mean"
           tal:content="view/groupPostingStats/intMeanPerDay"
-          i18n:name="n">some</span>
-    posts each day; the most they have posted is
+          i18n:name="n">some</span> posts each day;</b>
+    the most they have posted is
     <span class="val gs-group-stats-summary-posting-max" i18n:name="m"
           tal:content="view/groupPostingStats/maxPerDay">a few</span>
     posts in one day.
