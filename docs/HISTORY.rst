@@ -1,6 +1,13 @@
 Changelog
 =========
 
+3.2.1 (2016-04-19)
+------------------
+
+* Adding more unit tests
+* Switching to a ``__missing__`` method for the dict of months in
+  a year
+
 3.2.0 (2016-02-26)
 ------------------
 
